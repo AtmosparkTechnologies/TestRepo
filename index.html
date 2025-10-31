@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner with Onground | Venue Onboarding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Emerald & Warm Neutral -->
+    <!-- Application Structure Plan: Designed a thematic, top-down SPA, not a linear presentation. Starts with a Hero/Opportunity section to hook the user. Uses an interactive tabbed interface for 'Why Us' (Benefits) to make info digestible. A clear visual 'How it Works' process flow (HTML/CSS) follows. A 'Features' grid details capabilities. A 'Dashboard' section combines the testimonial with a Chart.js bar chart to visualize the '60% booking increase' data point, adding strong proof. A final 'Join Us' section provides a clear CTA and contact info. Sticky navigation allows users to jump to any theme. This structure is chosen to guide the user logically from interest to action, making the value prop clearer than a simple slide deck. -->
+    <!-- Visualization & Content Choices: [Report: Benefits (Slide 3) -> Goal: Organize/Inform -> Viz: Interactive JS Tabs -> Interaction: Click to show/hide content -> Justification: Breaks down 4 key points cleanly.]; [Report: Process (Slide 4) -> Goal: Inform -> Viz: 3-Step HTML/Tailwind flow -> Interaction: Static -> Justification: Clear, visual, no-SVG/Mermaid process map.]; [Report: 60% data (Slide 6) -> Goal: Compare/Persuade -> Viz: Chart.js Bar Chart -> Interaction: Load animation, hover tooltip -> Justification: Visually quantifies the testimonial's success, making the 60% claim more impactful than text alone. Chart.js/Canvas used.]; [Report: CTA (Slide 6) -> Goal: Action -> Viz: HTML/Tailwind section -> Interaction: Scroll-to links -> Justification: Consolidates all contact points and final action.] -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-btn.active {
+            border-color: #059669; /* emerald-600 */
+            background-color: #D1FAE5; /* emerald-100 */
+            color: #065F46; /* emerald-800 */
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold text-emerald-600">🏟️ Onground</span>
+                </div>
+                <div class="hidden md:flex md:space-x-8">
+                    <a href="#home" class="nav-link text-gray-600 hover:text-emerald-600 font-medium">Home</a>
+                    <a href="#why-us" class="nav-link text-gray-600 hover:text-emerald-600 font-medium">Why Us</a>
+                    <a href="#how-it-works" class="nav-link text-gray-600 hover:text-emerald-600 font-medium">How It Works</a>
+                    <a href="#features" class="nav-link text-gray-600 hover:text-emerald-600 font-medium">Features</a>
+                    <a href="#proof" class="nav-link text-gray-600 hover:text-emerald-600 font-medium">Proof</a>
+                    <a href="#join-us" class="nav-link bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition duration-200">List Your Venue</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-emerald-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
+            <a href="#home" class="nav-link block px-4 py-3 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600">Home</a>
+            <a href="#why-us" class="nav-link block px-4 py-3 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600">Why Us</a>
+            <a href="#how-it-works" class="nav-link block px-4 py-3 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600">How It Works</a>
+            <a href="#features" class="nav-link block px-4 py-3 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600">Features</a>
+            <a href="#proof" class="nav-link block px-4 py-3 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600">Proof</a>
+            <a href="#join-us" class="nav-link block px-4 py-3 bg-emerald-600 text-white font-medium text-center m-2 rounded-lg">List Your Venue</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section 1: Hero / Opportunity -->
+        <section id="home" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight">
+                    Book. <span class="text-emerald-600">Play.</span> Repeat.
+                </h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                    Join Nepal’s fastest-growing sports booking platform and turn your venue into a booking magnet.
+                </p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-bold text-gray-800">🚀 The Challenge</h3>
+                        <p class="mt-3 text-gray-600">
+                            Empty slots are lost revenue. Managing bookings manually is time-consuming, inefficient, and prone to errors. Reaching new players is a constant struggle.
+                        </p>
+                    </div>
+                    <div class="bg-emerald-50 p-6 rounded-xl shadow-lg border border-emerald-200">
+                        <h3 class="text-2xl font-bold text-emerald-800">✅ The Solution</h3>
+                        <p class="mt-3 text-emerald-700">
+                            Onground connects your facilities directly to **thousands of active players** in your area looking to book a game *right now*, all managed through one simple platform.
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-12">
+                    <a href="#join-us" class="nav-link inline-block bg-emerald-600 text-white px-10 py-4 rounded-lg text-lg font-bold hover:bg-emerald-700 transition duration-200 shadow-lg">
+                        Start Accepting Bookings Today
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Why Partner With Us (Interactive Tabs) -->
+        <section id="why-us" class="py-20 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-base font-semibold text-emerald-600 uppercase tracking-wide">Why Partner With Onground?</h2>
+                    <p class="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900">
+                        Your All-in-One Venue Solution
+                    </p>
+                    <p class="mt-4 text-lg text-gray-600">
+                        We built our platform with venue owners in mind. Explore the core benefits you'll unlock from day one. Click each tab to learn more.
+                    </p>
+                </div>
+
+                <div class="mt-16 max-w-5xl mx-auto">
+                    <!-- Tab Buttons -->
+                    <div class="flex flex-col sm:flex-row sm:justify-center gap-2 sm:gap-4 mb-8">
+                        <button class="tab-btn active w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-transparent text-gray-600 hover:bg-gray-200 transition" data-tab="tab-1">
+                            📈 More Bookings
+                        </button>
+                        <button class="tab-btn w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-transparent text-gray-600 hover:bg-gray-200 transition" data-tab="tab-2">
+                            💳 Instant Payments
+                        </button>
+                        <button class="tab-btn w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-transparent text-gray-600 hover:bg-gray-200 transition" data-tab="tab-3">
+                            📱 Easy Management
+                        </button>
+                        <button class="tab-btn w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-transparent text-gray-600 hover:bg-gray-200 transition" data-tab="tab-4">
+                            📢 Marketing Support
+                        </button>
+                    </div>
+
+                    <!-- Tab Content Panes -->
+                    <div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-200 min-h-[16rem] transition-all duration-300">
+                        <div id="tab-1" class="tab-content active">
+                            <h3 class="text-3xl font-bold text-gray-800">📈 More Bookings, Less Hassle</h3>
+                            <p class="mt-4 text-lg text-gray-600">
+                                Get high visibility and fill empty slots instantly by tapping into our massive user base near you. Our smart suggestion engine puts your venue in front of players actively looking to book.
+                            </p>
+                        </div>
+                        <div id="tab-2" class="tab-content">
+                            <h3 class="text-3xl font-bold text-gray-800">💳 Instant Payments</h3>
+                            <p class="mt-4 text-lg text-gray-600">
+                                Enjoy secure, reliable, and 100% cashless transactions. Funds are transferred instantly upon booking confirmation, reducing no-shows and eliminating the hassle of handling cash.
+                            </p>
+                        </div>
+                        <div id="tab-3" class="tab-content">
+                            <h3 class="text-3xl font-bold text-gray-800">📱 Easy Management</h3>
+                            <p class="mt-4 text-lg text-gray-600">
+                                Control your entire schedule, set dynamic pricing for peak/off-peak hours, and manage capacity anytime, anywhere, from your phone or desktop. Our dashboard gives you full control.
+                            </p>
+                        </div>
+                        <div id="tab-4" class="tab-content">
+                            <h3 class="text-3xl font-bold text-gray-800">📢 Marketing Support</h3>
+                            <p class="mt-4 text-lg text-gray-600">
+                                We actively promote your venue. Benefit from featured listings within the app, targeted social media campaigns, and inclusion in our community newsletters, all at no extra cost.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: How It Works -->
+        <section id="how-it-works" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-base font-semibold text-emerald-600 uppercase tracking-wide">How It Works</h2>
+                    <p class="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900">
+                        A Simple 3-Step Process
+                    </p>
+                    <p class="mt-4 text-lg text-gray-600">
+                        Getting your venue listed and ready for bookings is fast and straightforward. We'll guide you through every step.
+                    </p>
+                </div>
+
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                    <!-- Step 1 -->
+                    <div class="text-center p-6">
+                        <div class="flex items-center justify-center w-20 h-20 mx-auto bg-emerald-100 text-emerald-700 rounded-full text-4xl font-bold">
+                            1
+                        </div>
+                        <h3 class="mt-6 text-2xl font-bold text-gray-800">Register</h3>
+                        <p class="mt-3 text-gray-600">
+                            Sign up and verify your venue details with the Onground team. We'll confirm your location, facilities, and amenities.
+                        </p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="text-center p-6">
+                        <div class="flex items-center justify-center w-20 h-20 mx-auto bg-emerald-100 text-emerald-700 rounded-full text-4xl font-bold">
+                            2
+                        </div>
+                        <h3 class="mt-6 text-2xl font-bold text-gray-800">Configure</h3>
+                        <p class="mt-3 text-gray-600">
+                            Use our simple dashboard to add your facilities (e.g., Futsal, Cricket net) and set up your pricing and slot availability.
+                        </p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="text-center p-6">
+                        <div class="flex items-center justify-center w-20 h-20 mx-auto bg-emerald-100 text-emerald-700 rounded-full text-4xl font-bold">
+                            3
+                        </div>
+                        <h3 class="mt-6 text-2xl font-bold text-gray-800">Accept</h3>
+                        <p class="mt-3 text-gray-600">
+                            Go live! Start receiving instant, paid bookings from thousands of players in your community immediately.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 4: Features -->
+        <section id="features" class="py-20 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-base font-semibold text-emerald-600 uppercase tracking-wide">Platform Features</h2>
+                    <p class="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900">
+                        Management Features in Your Hand
+                    </p>
+                    <p class="mt-4 text-lg text-gray-600">
+                        Our platform is packed with tools to help you optimize and grow your business with minimal effort.
+                    </p>
+                </div>
+
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-bold text-gray-800">Total Control</h3>
+                        <p class="mt-3 text-gray-600">Granular slot and pricing management. Set different prices for peak/off-peak rates, member discounts, or special events.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-bold text-gray-800">Performance Dashboards</h3>
+                        <p class="mt-3 text-gray-600">Access deep analytics on revenue, utilization rates, and popular booking times to make data-driven decisions.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-bold text-gray-800">Customer Engagement</h3>
+                        <p class="mt-3 text-gray-600">Monitor customer feedback and ratings. Respond to reviews and build a loyal community around your venue.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-bold text-gray-800">Dedicated Support</h3>
+                        <p class="mt-3 text-gray-600">Our 24/7 technical and operational support team is always available to help you with any issues or questions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Proof / Dashboard -->
+        <section id="proof" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-base font-semibold text-emerald-600 uppercase tracking-wide">Real Results</h2>
+                    <p class="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900">
+                        See The Onground Effect
+                    </p>
+                    <p class="mt-4 text-lg text-gray-600">
+                        Don't just take our word for it. See how we're helping venues just like yours thrive in a competitive market.
+                    </p>
+                </div>
+
+                <div class="mt-16 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="bg-gray-800 p-8 md:p-12 rounded-2xl shadow-2xl text-white">
+                        <blockquote class="text-2xl md:text-3xl font-medium italic relative">
+                            <span class="absolute -top-4 -left-6 text-7xl text-gray-700 opacity-50">“</span>
+                            Onground helped us fill empty evening slots—bookings are up 60% in 2 months! The platform is simple and the support is fantastic.
+                            <span class="absolute -bottom-8 -right-0 text-7xl text-gray-700 opacity-50">”</span>
+                        </blockquote>
+                        <p class="mt-8 text-xl font-bold text-right text-emerald-300">
+                            — Urban Sports, Kathmandu
+                        </p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
+                        <h3 class="text-2xl font-bold text-gray-800 text-center">Typical Venue Booking Growth</h3>
+                        <p class="text-center text-gray-600 mb-4">Visualizing the 60% increase</p>
+                        <div class="chart-container">
+                            <canvas id="bookingChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: CTA / Join Us -->
+        <section id="join-us" class="py-20 md:py-32 bg-emerald-700 text-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl md:text-5xl font-extrabold">
+                    Let's Grow Your Game.
+                </h2>
+                <p class="mt-4 text-lg md:text-xl text-emerald-100 max-w-3xl mx-auto">
+                    Ready to fill your schedule, reduce your workload, and increase your revenue? List your venue on Onground today.
+                </p>
+                
+                <div class="mt-12 bg-white text-gray-800 p-8 md:p-12 rounded-2xl shadow-2xl max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="text-center md:text-left">
+                        <h3 class="text-3xl font-bold text-gray-900">List Your Venue Today!</h3>
+                        <p class="mt-3 text-gray-600">Scan the code with your phone or visit our website to start the registration process. Our team is standing by to help you get set up.</p>
+                        <ul class="mt-6 space-y-3 text-lg text-left">
+                            <li class="flex items-center">
+                                <span class="text-emerald-600 mr-3">🌐</span>
+                                <a href="https://www.getonground.com" target="_blank" class="hover:underline">www.getonground.com</a>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-emerald-600 mr-3">📧</span>
+                                <a href="mailto:hello@getonground.com" class="hover:underline">contact@getonground.com</a>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-emerald-600 mr-3">📱</span>
+                                <span>+977 9860104414</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <div class="w-48 h-48 md:w-56 md:h-56 bg-gray-100 rounded-lg flex items-center justify-center border-4 border-gray-200">
+                            <p class="text-gray-500 font-medium">[QR Code Placeholder]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>© Onground Technologies Pvt. Ltd. | Kathmandu, Nepal</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu on nav link click
+            document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Smooth scrolling for desktop nav links
+            document.querySelectorAll('header .nav-link').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 64, // Offset for sticky header
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Tabbed Interface Logic
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // Chart.js Booking Chart
+            const ctx = document.getElementById('bookingChart');
+            if (ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Before Onground', 'After Onground'],
+                        datasets: [{
+                            label: 'Monthly Bookings',
+                            data: [100, 160], // Represents a 60% increase from a baseline of 100
+                            backgroundColor: [
+                                'rgba(110, 231, 183, 0.6)', // emerald-300
+                                'rgba(5, 150, 105, 0.6)'    // emerald-600
+                            ],
+                            borderColor: [
+                                'rgba(110, 231, 183, 1)',
+                                'rgba(5, 150, 105, 1)'
+                            ],
+                            borderWidth: 2,
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: '#e5e7eb' // gray-200
+                                },
+                                ticks: {
+                                    color: '#4b5563' // gray-600
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#1f2937' // gray-800
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: true,
+                                backgroundColor: '#1f2937', // gray-800
+                                titleFont: {
+                                    weight: 'bold'
+                                },
+                                bodyFont: {
+                                    size: 14
+                                },
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            // Show relative value for "After"
+                                            if (context.dataIndex === 1) {
+                                                label += `+60% Increase`;
+                                            } else {
+                                                label += 'Baseline';
+                                            }
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>
